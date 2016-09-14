@@ -1,0 +1,7 @@
+name: rtest
+account: snf-shiny
+server: shinyapps.io
+appId: 63728
+bundleId: 557361
+url: https://snf-shiny.shinyapps.io/rtest/
+when: 1473864983.50152

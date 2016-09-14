@@ -1,0 +1,41 @@
+<div style=" border: 1px dashed black;">
+    <h1>Description</h1>
+    <p><strong>SNF</strong> is a novel computational method for genomic data integration that was developed in the lab of Anna Goldenberg. SNF constructs patient similarity networks for each of the data types and in a second step integrates iteratively these networks until it converges to a final fused network.
+SNF is able to deal with various data types and since the integration happens in the sample space one can combine various data type without worrying for different scales or noise among the different data.</p>
+<br>
+<img src="overview.png">  
+<br>
+<a href="http://www.nature.com/nmeth/journal/v11/n3/abs/nmeth.2810.html"> Citation</a> 
+<p>     B Wang, A Mezlini, F Demir, M Fiume, T Zu, M Brudno, B Haibe-Kains, A Goldenberg (2014) Similarity Network Fusion: a fast and effective method to aggregate multiple data types on a genome wide scale. Nature Methods. Online. Jan 26, 2014   </p>
+
+<h1>Tutorial</h1>
+<h3>Application overview</h3>
+This application allows even for users with no bioinformatics experience to familiarize and use the <strong>SNF</strong> method.   The data  available in this application are restricted to the Glioblastoma multiforme (GBM) data set from the paper of Wang et al.  
+ Other implementations of this method within the eTRIKS project will allow users to upload their own data 
+ <h3>Preprocessing of the data</h3>
+<ul>
+
+<li>One can remove samples and features that have more than a predefined percentage of missing values. </li>
+<li>Imputation can then be appplied to the remaining data (<a href="https://www.bioconductor.org/packages/impute/">impute package</a>,KNN imputation ). The number of neighbors to be used in the imputation cqan be defined by the user</li>
+<li>Finally the user can choose to normalize the features in order to have mean 0 and standard deviation of 1</li>
+</ul>
+<h3>Choose parameters</h3>
+<ul>
+<li>Number of K-nearest neighbours, (usually 10~30)</li>
+<li>Hyperparameter used in constructing similarity network, (usually 0.3~0.8)</li>  
+<li>Number of Iterations in the diffusion process,  (usually 10~20)</li>
+<li>Number of Clusters</li>
+<li>The fused similarity matrix produces a fully conected network. One can select to display the top x% of the edges ranked by similarity weights</li>
+</ul>
+<h3>Output</h3>
+<p>Heatmap of the similarity matrix. Samples are ordered by the clusters provided by the argument groups with group information displayed with a color bar</b>
+<p>A table with the estimates of the number of clusters given the two heuristics that are being used: 1) Eigengaps  2) Rotation cost</p>
+<p> Network representation of the similarity matrix.Nodes correspond to samples and the colors correspond to the clustering groups. Only the the top selected interactions (based on similarity weight) are beeing displayed</p>
+<h3>Download files</h3>
+The user can download the following files
+<ul>
+<li>The fused similarity matrix</li>
+<li>The assignment of patients/samples into the different groups</li>  
+<li>The interactions among samples and their values. This table can be used into generationg networks with other tools e.g <a href="http://www.cytoscape.org/">Cytoscape</a></li>
+</ul>
+</div>
