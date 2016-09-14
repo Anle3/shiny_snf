@@ -52,8 +52,9 @@ return(Wf)
 number_of_clusters=function(Wf){
 #estimate bnumber of clusters
 clusters=as.matrix(estimateNumberOfClustersGivenGraph(Wf))
-rownames(clusters)=c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate")
-colnames(clusters)=c("estimate number of clusters given graph")
+clusters=cbind(c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate"),clusters)
+#rownames(clusters)=c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate")
+colnames(clusters)=c("Method","Estimate number of clusters given graph")
 return(clusters)
 }
 
