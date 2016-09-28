@@ -1,8 +1,5 @@
 
-library(SNFtool);
-library(impute);#source("http://bioconductor.org/biocLite.R");biocLite("impute")
-library(reshape)
-library(parallel)
+
 source('./snf_aux_shiny.R')
 
 
@@ -13,7 +10,7 @@ fl=lapply(features_list,read_shiny_files)
 pprocess_files=function(features_list,rm,rmv,im,imv,nr){
 
 
-  #remove rows and columns with more than C missing values
+ #remove rows and columns with more than C missing values
  if(rm==TRUE) features_list=lapply(features_list,remove_missing,rmv)
 
 
@@ -29,33 +26,32 @@ makeWf=function(K,alpha,tau,features_list){
 #return(as.matrix(features_list))
 
 
-###patients common among the different data
+  ###patients common among the different data
+  cp=as.matrix(common_patients(features_list))
 
- cp=as.matrix(common_patients(features_list))
-
-features_list=lapply(features_list,function(x,p) x[p,],cp)
-
+  features_list=lapply(features_list,function(x,p) x[p,],cp)
 
 
-##generate affinity matrices
-Ws = mapply(aff_matrices,features_list,rep("cont",length(features_list)),K=K,alpha=alpha,SIMPLIFY=F)
 
-#generate the overall fused matrix
-Wf <-SNF(Ws, K, T)
+  ##generate affinity matrices
+  Ws = mapply(aff_matrices,features_list,rep("cont",length(features_list)),K=K,alpha=alpha,SIMPLIFY=F)
 
-#assign to rows and colums the patient names (3 first components of TCGA barcodes)
-rownames(Wf)=cp
-colnames(Wf)=cp
-return(Wf)
+    #generate the overall fused matrix
+  Wf <-SNF(Ws, K, T)
+
+  #assign to rows and colums the patient names (3 first components of TCGA barcodes)
+  rownames(Wf)=cp
+  colnames(Wf)=cp
+  return(Wf)
 }
 
 number_of_clusters=function(Wf){
-#estimate bnumber of clusters
-clusters=as.matrix(estimateNumberOfClustersGivenGraph(Wf))
-clusters=cbind(c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate"),clusters)
-#rownames(clusters)=c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate")
-colnames(clusters)=c("Method","Estimate number of clusters given graph")
-return(clusters)
+#estimate number of clusters by using eigen/gaps and rotation cost
+  clusters=as.matrix(estimateNumberOfClustersGivenGraph(Wf))
+  clusters=cbind(c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate"),clusters)
+  #rownames(clusters)=c("eigen-gaps best estimate","eigen-gaps 2nd best estimate","rotation cost best estimate","rotation cost 2nd best estimate")
+  colnames(clusters)=c("Method","Estimate number of clusters given graph")
+  return(clusters)
 }
 
 #Cluster groups by using spectral clustering
@@ -83,6 +79,7 @@ display_heatmap=function(Wf,group){
 
 }
 
+#plo
 nw_to_plot=function(nw,groups,top_percentage){
   colnames(nw)=c( "source" ,"target" ,"value" )
   top_cols=round(nrow(nw)*top_percentage)
@@ -93,21 +90,4 @@ nw_to_plot=function(nw,groups,top_percentage){
 
 }
 
-select_features=function(features_list,Wn,nr_of_clusters){
-  ncl=4 #number of clusters for parallel computing
-  cl=makeCluster(ncl)#generate cluster
-  clusterCall(cl, function() library(SNFtool))
-
-  #system.time(features<-rankFeaturesByNMI(features_list1,Wf))
-  #    user   system  elapsed
-  #  2450.670 8851.609 1487.624
-
-
-  features.2<-rankFeaturesByNMI.2(features_list,Wn,ncl=ncl,cl=cl,nr_of_clusters)
-
-  stopCluster(cl)
-
-  formated_features=format_ranks(features_list1,features.2)
-  fn=paste(rep("ranked_features_",3),seq(length(formated_features)),sep="")
-  mapply(function(x,y) eval(parse(text=paste("write.table(formated_features[[",x,']],file="',y,'.csv",row.names=TRUE)',sep=""))),seq(length(fn)),fn)
-}
+ 

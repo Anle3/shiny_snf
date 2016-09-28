@@ -1,8 +1,5 @@
-#load packages
-library("shiny")
-library(networkD3)
-library( "shiny")
 
+ 
 #load scripts needed for running SNF
 
 options(shiny.maxRequestSize=100*1024^2)

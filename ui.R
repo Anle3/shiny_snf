@@ -15,7 +15,7 @@ shinyUI(fluidPage(
     sidebarPanel(
       fluidRow(
         wellPanel(
-          tags$h4("GBM data set Wang et al., Nature 201"),
+          tags$h4("GBM data set Wang et al., Nature 2011"),
  
           checkboxGroupInput(inputId="data", label="Select at least two data types",c("mRNA expresion"="glio_mrna","methylation"="glio_meth","miRNA expresion"="glio_mirna"),selected = c("glio_mrna","glio_meth","glio_mirna")),
 
@@ -30,7 +30,7 @@ shinyUI(fluidPage(
             numericInput("rmv", "remove sample and features with more than x% missing:", 20)
           ),
 
-          checkboxInput("im", label = "Impute", value = FALSE),
+          checkboxInput("im", label = "Impute", value = TRUE),
 
           conditionalPanel(
               condition="input.im==true"
