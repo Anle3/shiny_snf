@@ -2,6 +2,6 @@ name: rtest
 account: snf-shiny
 server: shinyapps.io
 appId: 63728
-bundleId: 570174
+bundleId: 594937
 url: https://snf-shiny.shinyapps.io/rtest/
-when: 1474997160.71327
+when: 1477309216.81361

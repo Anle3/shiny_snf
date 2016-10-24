@@ -15,7 +15,7 @@ shinyServer(function(input,output){
   Wf <- reactive({
 
 
-    makeWf(K=20,tau=10,alpha=0.5,fl())
+    makeWf(K=input$K,tau=input$T,alpha=input$alpha,fl())
     })
 
   #Vector containing group assignements
