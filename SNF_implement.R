@@ -80,7 +80,9 @@ display_heatmap=function(Wf,group){
 }
 
 #plo
-nw_to_plot=function(nw,groups,top_percentage){
+nw_plot_top=function(Wf,groups,top_percentage){
+  nw <- make_nw(Wf)
+  
   colnames(nw)=c( "source" ,"target" ,"value" )
   top_cols=round(nrow(nw)*top_percentage)
   nw$source=groups$ID[match(nw$source,groups$name)]-1
@@ -90,4 +92,13 @@ nw_to_plot=function(nw,groups,top_percentage){
 
 }
 
+nw_plot_knn=function(Wf,groups,kk){
+  nwf<- dominataset(Wf,kk)
+  nw <- make_nw(nwf)
+  colnames(nw)=c( "source" ,"target" ,"value" )
+  nw$source=groups$ID[match(nw$source,groups$name)]-1
+  nw$target=groups$ID[match(nw$target,groups$name)]-1
+ return(nw[nw$value>0,])
+  
+}
  

@@ -48,9 +48,22 @@ shinyUI(fluidPage(
           numericInput(inputId="alpha",label="hyperparameter, usually (0.3~0.8)",value=0.5),
           numericInput(inputId="T",label="Number of Iterations",value=10),
           numericInput(inputId="clusters",label="Number of Clusters",value=3,min=1,max=10,step=1),
-
-          sliderInput(inputId="topLinks",label="Top % of Interactions",min=0,max=1,value=0.05,step=0.01),
-
+          checkboxInput("rm", label = "Remove outliers", value = FALSE),
+         
+          selectInput("fl_nodes", label = "Filter network by", choices = c("Top Links"="topLinks","KNNs"="knn")),
+          
+          conditionalPanel(
+            condition = "input.fl_nodes == 'topLinks'",
+             
+          
+          sliderInput(inputId="topLinks",label="Top % of Interactions",min=0,max=1,value=0.05,step=0.01)
+          ),
+          
+          conditionalPanel(
+            condition = "input.fl_nodes == 'knn'",
+            
+            numericInput(inputId="knn",label="Number of neighbors",value=20)          ),
+          
           tags$hr()
                ),
 

@@ -22,24 +22,31 @@ shinyServer(function(input,output){
   groups <- reactive({cluster_groups(Wf(),input$clusters)})
 
   #Links for network
-  nw <- reactive({make_nw(Wf())})
-
+  
   output$contents <- renderTable(number_of_clusters(Wf()))
 
   output$heatmap <- renderPlot({display_heatmap(Wf(),groups())})
 
+  groups2<-reactive({
+  groups2=order_group(groups(),descending=T,letter=T)
+  groups2=as.data.frame(cbind(names(groups2),groups2))
+  groups2$ID=1:nrow(groups2)
+  colnames(groups2)=c("name","group","ID")
+  return(groups2)
+  })
+  
   output$networkPlot <-
     renderForceNetwork(
 
-      {
-      groups2=order_group(groups(),descending=T,letter=T)
-      groups2=as.data.frame(cbind(names(groups2),groups2))
-      groups2$ID=1:nrow(groups2)
-      colnames(groups2)=c("name","group","ID")
-
-      nw=nw_to_plot(nw(),groups2,input$topLinks)
+      { 
+      if(input$fl_nodes=="topLinks"){
+       nw= nw_plot_top(Wf(),groups2(),input$topLinks)
+      }else if(input$fl_nodes=="knn"){
+          nw=nw_plot_knn(Wf(),groups2(),input$knn)
+      }
+        
       forceNetwork(
-        Nodes = groups2,
+        Nodes = groups2(),
         zoom=TRUE,
         Links = nw,
         Source = "source",
