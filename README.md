@@ -6,3 +6,5 @@
 Citation:
    B Wang, A Mezlini, F Demir, M Fiume, T Zu, M Brudno, B Haibe-Kains, A Goldenberg (2014) Similarity Network Fusion: a fast and effective method to aggregate multiple data types on a genome wide scale. Nature Methods. Online. Jan 26, 2014
  
+
+##[Link to Shiny app demo](https://snf-shiny.shinyapps.io/rtest/)
